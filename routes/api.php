@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventRegistrationController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +17,18 @@ use App\Http\Controllers\AuthController;
 |
 */
 
+Route::post('login', [AuthController::class, 'login']);
+
 Route::group([
-    'middleware' => 'api',
+    'middleware' => 'jwt.verify',
     'prefix' => 'auth'
 
 ], function ($router) {
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/logout', [AuthController::class, 'logout']);      
+    Route::post('/register', [EventRegistrationController::class, 'register']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::get('/user-profile', [AuthController::class, 'userProfile']);
+    Route::get('/get-all-event', [EventRegistrationController::class, 'getAllEvent']);  
+    Route::get('/get-event-by-id/{id}', [EventRegistrationController::class, 'getEventById']);        
+
 });

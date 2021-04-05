@@ -5,7 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EventRegistration extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+
+class EventRegistration extends Authenticatable implements JWTSubject
 {
     protected $table = 'event_registrations';
     protected $primaryKey = 'id';
@@ -20,6 +25,11 @@ class EventRegistration extends Model
     protected $fillable = [
         'evt_name',
         'evt_desc',
+        'city',
+        'state',
+        'golden_ticket',
+        'platinum_ticket',
+        'silver_ticket'
     ];
 
 
