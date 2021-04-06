@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\EventRegistration;
+use App\Models\EventLineup;
+use Carbon\Carbon;
 
 use Validator;
 
@@ -16,8 +18,7 @@ class EventRegistrationController extends Controller
         $validator = Validator::make($request->all(), [
             'evt_name' => 'required|string|between:2,100',
             'evt_desc' => 'required|string|between:2,100',
-            'city' => 'required|string|between:2,100',
-            'state' => 'required|string|between:2,100',
+            'location' => 'required|string|between:2,100',
         ]);
 
         if($validator->fails()){
@@ -27,11 +28,20 @@ class EventRegistrationController extends Controller
         $event_reg = EventRegistration::create(array_merge($validator->validated(),['golden_ticket' => json_encode($request->golden_ticket),
         'platinum_ticket' => json_encode($request->platinum_ticket) ,'silver_ticket' => json_encode($request->silver_ticket)
         ]));
+        if ($request->lineups) {
+            $lineUps = json_encode($request->lineups,true);
+            // $eventLineup = new EventLineup;
+             foreach($request->lineups as $key){
+            //  print_r(Carbon::parse($key['date_and_time']));
+            $eventLineup = new EventLineup();
+            $eventLineup->evt_id = $event_reg -> id;
+            $eventLineup->lineup_desc = $key['desc'];
+            $eventLineup->date_and_time = Carbon::parse($key['date_and_time']);
+            $eventLineup->save(); 
+         }
 
-        //  $eventRegistration = new EventRegistration();
-        // $eventRegistration->golden_ticket = json_encode($request->golden_ticket);
-        // $eventRegistration->save();
-        
+        }
+         
         return response()->json([
             'message' => 'Event successfully registered',
             'user' => $event_reg -> id
@@ -39,16 +49,28 @@ class EventRegistrationController extends Controller
     }
 
     public function getAllEvent(Request $request) {
-
         $eventRegistration = EventRegistration::get()->toJson(JSON_PRETTY_PRINT);
         return response($eventRegistration, 200);
 
     }
 
+    public function getEventByIdWithLineUps(Request $request,$id) {
+        if (EventRegistration::where('id', $id) -> exists()) {
+            $eventRegistration = EventRegistration::find($id);
+            $eventLineup = $eventRegistration -> eventLineup;
+            return response($eventRegistration -> toJson(JSON_PRETTY_PRINT), 200);
+        } else {
+            return response() -> json([
+                "message" => "Event not found"
+            ], 404);
+        }
+
+    }
+
     public function getEventById(Request $request,$id) {
 
-        if (EventRegistration::where('evt_id', $id)->exists()) {
-        $eventRegistration = EventRegistration::where('evt_id', $id)->get()->toJson(JSON_PRETTY_PRINT);
+        if (EventRegistration::where('id', $id)->exists()) {
+        $eventRegistration = EventRegistration::where('id', $id)->get()->toJson(JSON_PRETTY_PRINT);
         return response($eventRegistration, 200);
       } else {
         return response()->json([
@@ -57,5 +79,31 @@ class EventRegistrationController extends Controller
       }
 
     }
+    public function getLineUpByEventId(Request $request, $id) {
+
+        if (EventLineup::where('id', $id) -> exists()) {
+            $eventRegistration = EventRegistration::find($id);
+            $eventLineup = $eventRegistration -> eventLineup;
+            return response($eventLineup -> toJson(JSON_PRETTY_PRINT), 200);
+        } else {
+            return response() -> json([
+                "message" => "Line up not found"
+            ], 404);
+        }
+
+    }
+    public function deleteEvent(Request $request, $id) {
+        if (EventRegistration::where('id', $id) -> exists()) {
+            EventRegistration::where('id', $id)->delete();
+            return response() -> json([
+                "message" => "Event deleted"
+            ], 200);
+        } else {
+            return response() -> json([
+                "message" => "Line up not found"
+            ], 404);
+        }
+    }
+    
 
 }

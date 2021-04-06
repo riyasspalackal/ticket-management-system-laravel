@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\EventLineup;
 
 
 class EventRegistration extends Authenticatable implements JWTSubject
@@ -50,5 +51,22 @@ class EventRegistration extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims() {
         return [];
     }    
+
+
+    public function eventLineup()
+    {
+        return $this->hasMany(EventLineup::class,'evt_id');
+    }
+
+    public static function boot() {
+        parent::boot();
+        self::deleting(function($eventRegistration) { // before delete() method call this
+             $eventRegistration->eventLineup()->each(function($eventLineup) {
+                $eventLineup->delete(); // <-- direct deletion
+             });
+             
+            
+        });
+    }
     
 }

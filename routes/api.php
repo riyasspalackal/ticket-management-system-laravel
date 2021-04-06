@@ -29,6 +29,11 @@ Route::group([
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
     Route::get('/get-all-event', [EventRegistrationController::class, 'getAllEvent']);  
-    Route::get('/get-event-by-id/{id}', [EventRegistrationController::class, 'getEventById']);        
+    Route::get('/get-event-by-id/{id}', [EventRegistrationController::class, 'getEventById']);    
+    Route::get('/get-event-with-lineup/{id}', [EventRegistrationController::class, 'getEventByIdWithLineUps']);
+    Route::get('/get-lineup-by-event-id/{id}', [EventRegistrationController::class, 'getLineUpByEventId']);    
+    Route::get('/delete-event/{id}', [EventRegistrationController::class, 'deleteEvent']);    
+
+
 
 });

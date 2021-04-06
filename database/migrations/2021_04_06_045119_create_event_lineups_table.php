@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEventRegistrationsTable extends Migration
+class CreateEventLineupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateEventRegistrationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('event_registrations', function (Blueprint $table) {
+        Schema::create('event_lineups', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('evt_name');
-            $table->longText('evt_desc');
-            $table->text('location');
-            $table->json('golden_ticket');
-            $table->json('platinum_ticket');
-            $table->json('silver_ticket');
+            $table->integer('evt_id')->unsigned();
+            $table->foreign('evt_id')->references('id')->on('event_registrations')->onDelete('cascade');
+            $table->longText('lineup_desc');
+            $table->dateTime('date_and_time');
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateEventRegistrationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('event_registrations');
+        Schema::dropIfExists('event_lineups');
     }
 }
