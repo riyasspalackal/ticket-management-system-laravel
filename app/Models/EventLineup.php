@@ -46,6 +46,7 @@ class EventLineup extends Model
     {
         return $this->belongsTo(EventRegistration::class);
     }
+    
 
     
     

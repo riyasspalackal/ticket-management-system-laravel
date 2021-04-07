@@ -33,6 +33,7 @@ Route::group([
     Route::get('/get-event-with-lineup/{id}', [EventRegistrationController::class, 'getEventByIdWithLineUps']);
     Route::get('/get-lineup-by-event-id/{id}', [EventRegistrationController::class, 'getLineUpByEventId']);    
     Route::get('/delete-event/{id}', [EventRegistrationController::class, 'deleteEvent']);    
+    Route::post('/update-event/{id}', [EventRegistrationController::class, 'updateEvent']);    
 
 
 

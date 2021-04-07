@@ -26,8 +26,7 @@ class EventRegistration extends Authenticatable implements JWTSubject
     protected $fillable = [
         'evt_name',
         'evt_desc',
-        'city',
-        'state',
+        'location',
         'golden_ticket',
         'platinum_ticket',
         'silver_ticket'
@@ -57,6 +56,7 @@ class EventRegistration extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(EventLineup::class,'evt_id');
     }
+    
 
     public static function boot() {
         parent::boot();
