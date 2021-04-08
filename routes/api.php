@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventRegistrationController;
+use App\Http\Controllers\TicketController;
+
+
 
 
 /*
@@ -33,7 +36,11 @@ Route::group([
     Route::get('/get-event-with-lineup/{id}', [EventRegistrationController::class, 'getEventByIdWithLineUps']);
     Route::get('/get-lineup-by-event-id/{id}', [EventRegistrationController::class, 'getLineUpByEventId']);    
     Route::get('/delete-event/{id}', [EventRegistrationController::class, 'deleteEvent']);    
-    Route::post('/update-event/{id}', [EventRegistrationController::class, 'updateEvent']);    
+    Route::post('/update-event/{id}', [EventRegistrationController::class, 'updateEvent']); 
+    Route::get('/get-ticket-details/{id}', [TicketController::class, 'getTicketDetails']);  
+    Route::post('/ticket-booking', [TicketController::class, 'ticketBooking']);
+    Route::get('/get-all-booked-ticket', [TicketController::class, 'getAllBookedTicket']);  
+
 
 
 

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Models\EventLineup;
+use App\Models\Ticket;
 
 
 class EventRegistration extends Authenticatable implements JWTSubject
@@ -55,6 +56,10 @@ class EventRegistration extends Authenticatable implements JWTSubject
     public function eventLineup()
     {
         return $this->hasMany(EventLineup::class,'evt_id');
+    }
+    public function ticket()
+    {
+        return $this->hasMany(Ticket::class,'evt_id');
     }
     
 

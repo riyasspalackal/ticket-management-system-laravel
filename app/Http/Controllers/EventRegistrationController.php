@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\EventRegistration;
 use App\Models\EventLineup;
+use App\Models\Ticket;
 use Carbon\Carbon;
 use Validator;
 
@@ -18,9 +19,7 @@ class EventRegistrationController extends Controller
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
-        $event_reg = EventRegistration::create(array_merge($validator->validated(),['golden_ticket' => json_encode($request->golden_ticket),
-        'platinum_ticket' => json_encode($request->platinum_ticket) ,'silver_ticket' => json_encode($request->silver_ticket)
-        ]));
+        $event_reg = EventRegistration::create($validator->validated());
         if ($request->event_lineup) {
             foreach($request->event_lineup as $key){
             //  print_r(Carbon::parse($key['date_and_time']));
@@ -29,6 +28,18 @@ class EventRegistrationController extends Controller
             $eventLineup->lineup_desc = $key['lineup_desc'];
             $eventLineup->date_and_time = Carbon::parse($key['date_and_time']);
             $eventLineup->save(); 
+         }
+        }
+        if ($request->tickets) {
+            foreach($request->tickets as $key){
+            //  print_r(Carbon::parse($key['date_and_time']));
+            $ticket = new Ticket();
+            $ticket->evt_id = $event_reg -> id;
+            $ticket->ticket_type = $key['ticket_type'];
+            $ticket->capacity = $key['capacity'];
+            $ticket->price = $key['price'];
+            $ticket->available_ticket = $key['capacity'];
+            $ticket->save(); 
          }
         }
         return response()->json([
@@ -46,6 +57,7 @@ class EventRegistrationController extends Controller
         if (EventRegistration::where('id', $id) -> exists()) {
             $eventRegistration = EventRegistration::find($id);
             $eventLineup = $eventRegistration -> eventLineup;
+            $ticket = $eventRegistration -> ticket;
             return response($eventRegistration -> toJson(JSON_PRETTY_PRINT), 200);
         } else {
             return response() -> json([
@@ -93,6 +105,24 @@ class EventRegistrationController extends Controller
         foreach ($request->event_lineup as $key => $value) {
             $eventLineup = EventLineup::find($value["id"]);
             $eventLineup->fill($value)->save();  
+        }
+        foreach ($request->tickets as $key => $value) {
+        
+           
+            if (array_key_exists("id",$value)) {
+                $tickets = Ticket::find($value["id"]);
+                $tickets->fill($value)->save();
+            }else{
+            
+                $ticket = new Ticket();
+                $ticket->evt_id = $id;
+                $ticket->ticket_type = $value['ticket_type'];
+                $ticket->capacity = $value['capacity'];
+                $ticket->price = $value['price'];
+                $ticket->available_ticket = $value['capacity'];
+                $ticket->save();
+            }
+             
         }
         return response() -> json([
                 "message" => "Record Successfully Updated!"

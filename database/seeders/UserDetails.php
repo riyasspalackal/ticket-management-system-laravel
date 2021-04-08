@@ -20,9 +20,17 @@ class UserDetails extends Seeder
     {
          DB::table('users')->delete();
         User::create(array(
-        'name'     => 'test user',
+        'name'     => 'admin',
         'username' => 'admin',
         'email'    => 'admin@gmail.com',
+        'user_type'=> 1,
+        'password' =>   bcrypt('admin123'),
+    ));
+    User::create(array(
+        'name'     => 'user',
+        'username' => 'user',
+        'email'    => 'user@gmail.com',
+        'user_type'=> 2,
         'password' =>   bcrypt('admin123'),
     ));
     }
