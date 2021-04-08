@@ -37,11 +37,8 @@ then run the following command to create migrations and create dummy content in 
 ##### Post
 * POST  Event Registration `http://127.0.0.1:8000/api/register`
 * GET  All Event ` http://127.0.0.1:8000/api/get-all-event`
-* GET  Lineup By Event id `http://127.0.0.1:8000/api/get-lineup-by-event-id`
+* GET  Lineup By Event id `http://127.0.0.1:8000/api/get-lineup-by-event-id/id`
 * POST Update Event `http://127.0.0.1:8000/api/update-event`
 * POST Ticket Booking `http://127.0.0.1:8000/api/ticket-booking`
 * GET  List Tickets `http://127.0.0.1:8000/api/get-ticket-details`
 
-
-
-Same For Comments.

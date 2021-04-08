@@ -8,6 +8,7 @@ use App\Models\EventRegistration;
 use App\Models\EventLineup;
 use App\Models\Ticket;
 use App\Models\BookingHistory;
+use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
 use Validator;
@@ -44,7 +45,7 @@ class TicketController extends Controller
     
         if ($request->tickets[0]["evt_id"]) {
             $bookingHistory = new BookingHistory();
-            $bookingHistory->evt_id = $request->tickets[0]["id"];
+            $bookingHistory->evt_id = $request->tickets[0]["evt_id"];
             $bookingHistory->customer_name = $request->customer_name;
             $bookingHistory->customer_email = $request->customer_email;
             $bookingHistory->phone_number = $request->phone_number;
@@ -68,5 +69,16 @@ class TicketController extends Controller
     public function getAllBookedTicket(Request $request) {
         $bookingHistory = BookingHistory::get()->toJson(JSON_PRETTY_PRINT);
         return response($bookingHistory, 200);
+    }
+    public function getAllTickets(Request $request) {
+        $bookingHistory = Ticket::get()->toJson(JSON_PRETTY_PRINT);
+        return response($bookingHistory, 200);
+    }
+    public function getTicketStaticsById(Request $request) {
+        $bookingHistory = DB::table('tickets')
+                 ->select('evt_id','available_ticket','ticket_type', DB::raw('MAX(available_ticket) as available_ticket'),DB::raw('MIN(capacity) as capacity'))
+                 ->groupBy('evt_id','ticket_type')
+                 ->get();
+            return response($bookingHistory -> toJson(JSON_PRETTY_PRINT), 200);
     }
 }

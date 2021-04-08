@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\EventRegistration;
+
 
 class BookingHistory extends Model
 {
@@ -23,4 +25,8 @@ class BookingHistory extends Model
         'ticket_history',
     ];
     
+     public function eventRegistration()
+    {
+        return $this->belongsTo(EventRegistration::class);
+    }
 }

@@ -39,6 +39,9 @@ Route::group([
     Route::get('/get-ticket-details/{id}', [TicketController::class, 'getTicketDetails']);  
     Route::post('/ticket-booking', [TicketController::class, 'ticketBooking']);
     Route::get('/get-all-booked-ticket', [TicketController::class, 'getAllBookedTicket']);  
+    Route::get('/get-all-tickets', [TicketController::class, 'getAllTickets']); 
+    Route::get('/get-tickets-statics', [TicketController::class, 'getTicketStaticsById']); 
+
 
 
 
