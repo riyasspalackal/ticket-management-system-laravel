@@ -41,4 +41,6 @@ then run the following command to create migrations and create dummy content in 
 * POST Update Event `http://127.0.0.1:8000/api/update-event`
 * POST Ticket Booking `http://127.0.0.1:8000/api/ticket-booking`
 * GET  List Tickets `http://127.0.0.1:8000/api/get-ticket-details`
+* GET  Dashboard statics `http://127.0.0.1:8000/api/get-tickets-statics`
+
 
