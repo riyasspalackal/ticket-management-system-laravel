@@ -32,9 +32,13 @@ class TicketController extends Controller
          if ($request->tickets) {
              foreach ($request->tickets as $key=> $value) {
                  $ff=json_encode($value);
-                 array_push($ticketHistory, (object)[ 'ticket_type'=> json_decode($ff)->ticket_type,
-                     'booked'=> json_decode($ff)->booked,
+                 if (array_key_exists('booked',$value)) {
+                    array_push($ticketHistory, (object)[ 
+                        'ticket_type'=> json_decode($ff)->ticket_type,
+                        'booked'=> json_decode($ff)->booked,
                      ]);
+                 }
+                
              }
          }
     

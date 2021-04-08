@@ -23,8 +23,7 @@ use App\Http\Controllers\TicketController;
 Route::post('login', [AuthController::class, 'login']);
 
 Route::group([
-    'middleware' => 'jwt.verify',
-    'prefix' => 'auth'
+    'middleware' => 'jwt.verify'
 
 ], function ($router) {
     Route::post('/register', [EventRegistrationController::class, 'register']);
