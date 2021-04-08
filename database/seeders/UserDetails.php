@@ -31,7 +31,7 @@ class UserDetails extends Seeder
         'username' => 'user',
         'email'    => 'user@gmail.com',
         'user_type'=> 2,
-        'password' =>   bcrypt('admin123'),
+        'password' =>   bcrypt('user'),
     ));
     }
 }
