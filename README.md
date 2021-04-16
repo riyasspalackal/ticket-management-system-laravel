@@ -23,6 +23,12 @@ then run the following command to generate fresh key.
 then run the following command to create migrations and create dummy content in  databbase.
 ###### `php artisan migrate:fresh --seed`
 
+##### Generate secret key
+###### `php artisan jwt:secret`
+
+##### Run application
+###### `php artisan serve`
+
 #### Two user created
 * admin user
   * username : admin
