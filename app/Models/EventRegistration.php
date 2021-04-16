@@ -28,9 +28,6 @@ class EventRegistration extends  Model
         'evt_name',
         'evt_desc',
         'location',
-        'golden_ticket',
-        'platinum_ticket',
-        'silver_ticket'
     ];
 
 

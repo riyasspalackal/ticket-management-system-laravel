@@ -18,9 +18,6 @@ class CreateEventRegistrationsTable extends Migration
             $table->string('evt_name');
             $table->longText('evt_desc');
             $table->text('location');
-            $table->json('golden_ticket');
-            $table->json('platinum_ticket');
-            $table->json('silver_ticket');
             $table->timestamps();
         });
     }
